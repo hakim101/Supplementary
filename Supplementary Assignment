@@ -1,0 +1,78 @@
+# Adds needed Packages
+##
+using Pkg
+Pkg.add("DataFrames")
+using DataFrames
+##
+wState = DataFrame(Block = [], state = [])
+wGoal = DataFrame(Block = [], state = [])
+function Planner()
+    print("\n++++++++++++++++++++++++++++++++++")
+    print("\n*____World Layout & Goal_STATE___*")
+    print("\n++++++++++++++++++++++++++++++++++")
+## Iniatialize the World State / Layout.   
+    println("\nEnter number of blocks:\n")
+    numBlocks = readline()
+    nBlocks = parse(Int, numBlocks)
+# Define the blocks
+    for a = 1:nBlocks
+        println(" \nEnter block name: \n")
+        block = readline()
+        println("\nBlock state: \n")
+        state = readline()
+        push!(wState, (block, state))
+    end
+# Plan to achieve the goal.
+    for b = 1:nBlock
+        println(" \nEnter specific block: \n")
+        block = readline()
+        println("\nEnter block goal state:\n")
+        state = readline()
+        push!(wGoal, (block, state))
+    end
+    
+## Action and Conditions section
+    print("\nUser's Action:")
+    for c = 1:nBlock
+        if wGoal[!, 2][c] != wState[!, 2][c] &&
+           length(wState[!, 2][c]) < 14
+            worldBlock = wState[!, 1][c]
+            print("\nMove $worldBlock onto table!")
+        end
+    end
+    for d = 1:nBlock
+        if length(wGoal[!, 2][d]) < 14
+            worldBlock = wGoal[!, 2][d]
+            print("\nMove $worldBlock")
+        end
+    end
+
+    print("\nPreconditions")
+    for d = 1:nBlock
+        if length(wGoal[!, 2][d]) < 15
+            worldBlock = wGoal[!, 1][d]
+            print("\nOnTable($worldBlock)")
+        end
+    end
+    
+    for d = 1:nBlock
+        if length(wGoal[!, 2][d]) < 11
+            worldBlock = wGoal[!, 1][d]
+            print("\nClear($worldBlock)")
+        end
+    end
+
+    print("\nUser's Delete Set")
+    for d = 1:nBlock
+        if length(wState[!, 2][d]) < 11
+            worldBlock = wState[!, 2][d]
+            print("\n$worldBlock")
+        end
+    end
+    
+    print("\nCurrent State\n")
+    for d = 1:nBlock
+        wState[!, 2][d] = wGoal[!, 2][d]
+    end
+    wState
+end
